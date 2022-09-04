@@ -25,7 +25,7 @@
             <b-form-textarea v-model="movement.description" placeholder="Descrição longa do movimento"></b-form-textarea>
           </b-form-group>
           <b-form-group>
-            <b-form-input v-model="movement.value" type="number" placeholder="Valor do movimento"></b-form-input>
+            <b-form-input v-model="movement.value" :state="valueState" type="text" placeholder="Valor do movimento"></b-form-input>
           </b-form-group>
           <b-form-group>
             <b-form-input v-model="movement.numberOfInstallments" type="number" placeholder="Quantidade de parcelas"></b-form-input>
@@ -92,6 +92,14 @@ export default {
       createdMovements: [],
       optionsCategories: [],
       showInput: true
+    }
+  },
+  computed: {
+    valueState() {
+      const str = this.movement.value
+      if (typeof str != "string") return false // we only process strings!
+      return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+        !isNaN(parseFloat(str))
     }
   },
   methods: {
