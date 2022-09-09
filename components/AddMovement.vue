@@ -40,6 +40,15 @@
             <b-form-select v-model="movement.categoryId" :options="optionsCategories"></b-form-select>
           </b-form-group>
 
+          <b-form-group label="Selecione a data do movimento">
+            <b-form-datepicker v-model="movement.movementedAt"></b-form-datepicker>
+          </b-form-group>
+
+          <b-form-group label="Selecione a data de liquidação">
+            <b-form-datepicker v-model="movement.settleDate"></b-form-datepicker>
+          </b-form-group>
+
+
           <b-button type="submit">Adicionar</b-button>
           <b-button type="reset" variant="danger">Limpar</b-button>
         </b-form>
@@ -84,6 +93,7 @@
 </template>
 
 <script>
+const ip = 'http://100.68.116.28:8080'
 export default {
   name: 'AddMovement',
   data() {
@@ -112,7 +122,7 @@ export default {
         headers: {'Content-Type': 'application/json'}
       }
       this.movement.descriptionCategory = this.optionsCategories.find(c => c.value === this.movement.categoryId).text
-      fetch('http://localhost:8080/movement', config)
+      fetch(`${ip}/movement`, config)
         .then(response => response.json())
         .then(movements => {
           this.createdMovements = movements;
@@ -128,7 +138,7 @@ export default {
     }
   },
   created() {
-    fetch('http://localhost:8080/category')
+    fetch(`${ip}/category`)
       .then(i => i.json())
       .then(categories => {
         return this.optionsCategories = categories.map(category => {
