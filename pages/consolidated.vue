@@ -20,7 +20,29 @@
         </b-col>
 
       </b-row>
-      <b-table striped hover :items="consolidated.data"></b-table>
+
+      <p>Total gasto: {{ consolidated.totalSpent }}</p>
+      <p>Total creditado/estornado: {{ consolidated.totalCredit }}</p>
+      <p>Diferença gasto e estorno: {{ consolidated.diffSpentAndCredit }}</p>
+
+      <b-tabs content-class="mt-3" justified>
+
+        <b-tab :title="pair.first" v-for="pair in consolidated.data">
+          <p>Total gasto: {{ pair.second.totalSpent }}</p>
+          <p>Total creditado/estornado: {{ pair.second.totalCredit }}</p>
+          <p>Diferença gasto e estorno: {{ pair.second.diffSpentAndCredit }}</p>
+
+          <b-tabs content-class="mt-3">
+            <b-tab title="Gastos">
+              <b-table striped hover :items="pair.second.spentMovementList"></b-table>
+            </b-tab>
+            <b-tab title="Estornos/Créditos">
+              <b-table striped hover :items="pair.second.creditMovementList"></b-table>
+            </b-tab>
+          </b-tabs>
+
+        </b-tab>
+      </b-tabs>
     </div>
 
   </div>
